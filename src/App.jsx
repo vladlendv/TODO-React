@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { IoMdAddCircleOutline } from "react-icons/io";
 import DeletedItem from "./components/DeletedItem";
 import TodoItem from "./components/TodoItem";
 
@@ -27,6 +28,7 @@ let data = [
 
 const App = () => {
   const [todos, setTodos] = useState(data);
+  const [todoText, setTodoText] = useState("");
   const [deleted, setDeleted] = useState([]);
 
   const todoChanged = (id) => {
@@ -55,8 +57,35 @@ const App = () => {
     removeDeletedTodo(todo.id);
   };
 
+  const addTodo = () => {
+    if (todoText !== "") {
+      setTodos([
+        {
+          id: Math.random(1, 100),
+          title: todoText,
+          isCompleted: false,
+        },
+        ...todos,
+      ]);
+      setTodoText("");
+    }
+  };
+
   return (
     <div>
+      <div className="flex">
+        <textarea
+          placeholder="Add new todo here"
+          value={todoText}
+          className="border border-gray-300 rounded-md resize-none"
+          onChange={(e) => setTodoText(e.target.value)}
+          cols="30"
+          rows="1"
+        ></textarea>
+        <button onClick={addTodo} className="hover:text-green-500">
+          <IoMdAddCircleOutline size={30} />
+        </button>
+      </div>
       <div className="mb-8">
         <h2 className="text-3xl text-center">Todo List</h2>
         {todos &&
